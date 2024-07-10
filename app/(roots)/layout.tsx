@@ -1,4 +1,6 @@
+import MobileNav from "@/components/MobileNav";
 import Sidebar from "@/components/Sidebar";
+import Image from "next/image";
 
 export default function RootLayout({
     children,
@@ -10,9 +12,22 @@ const loggedIn={
     lastName:'Faris'
 }
     return (
-        <div className="flex h-full w-full font-inter">
+        <main className="flex h-full w-full font-inter">
             <Sidebar user={loggedIn}/>
+            <div className="flex size-full flex-col">
+                <div className="root-layout">
+                    <Image
+                    src='/icons/logo.svg'
+                    height={30}
+                    width={30}
+                    alt="logo"
+                    />
+                <div>
+                    <MobileNav user={loggedIn}/>
+                </div>
+                </div>
             {children}
-        </div>
+            </div>
+        </main>
     );
 }
