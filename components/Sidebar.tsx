@@ -31,9 +31,10 @@ const Sidebar = ({ user }: SiderbarProps) => {
               key={item.label}
               className={cn(
                 'sidebar-link',
-                { 'bg-bank-gradient': isActive,
+                {
+                  'bg-bank-gradient': isActive,
                   'hover:scale-105 duration-200': !isActive
-                 }
+                }
               )}
             >
               <div className="relative size-6">

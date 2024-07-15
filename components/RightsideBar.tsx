@@ -44,7 +44,7 @@ const RightsideBar = ({ user, transactions, banks }: RightSidebarProps) => {
                     banks?.length > 0 &&
                     (
                         <div className="relative flex flex-1 flex-col items-center justify-center gap-5">
-                            <div className="relative z-10">
+                            <div className="relative z-10 hover:scale-105  duration-150">
                                 <Bankcard
                                     key={banks[0]?.$id}
                                     account={banks[0]}
@@ -54,7 +54,7 @@ const RightsideBar = ({ user, transactions, banks }: RightSidebarProps) => {
                             </div>
                             {
                                 banks[1] && (
-                                    <div className="absolute right-0 top-8 z-0 w-[90%]">
+                                    <div className="absolute right-0 top-8 z-0 w-[90%] hover:scale-105 hover:relative! hover:z-10 duration-100">
                                         <Bankcard
                                             key={banks[0]?.$id}
                                             account={banks[0]}
