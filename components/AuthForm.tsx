@@ -7,23 +7,21 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+    Form
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import CustomInput from './CustomInput'
 import { AuthFormSchema } from '@/lib/utils'
+import { Loader2 } from 'lucide-react'
 
 const AuthForm = ({ type }: { type: string }) => {
+    const [user, setUser] = useState(null);
+    const [isLoading, setIsLoading] = useState(false)
 
+    const formSchema = AuthFormSchema(type)
     // 1. Define your form.
-    const form = useForm<z.infer<typeof AuthFormSchema>>({
-        resolver: zodResolver(AuthFormSchema),
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
         defaultValues: {
             email: "",
             password: ""
@@ -31,13 +29,14 @@ const AuthForm = ({ type }: { type: string }) => {
     })
 
     // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof AuthFormSchema>) {
+    function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
-        console.log(values)
+        setIsLoading(true);
+        console.log(values);
+        setIsLoading(false);
     }
 
-    const [user, setUser] = useState(null)
     return (
         <section className="auth-form">
             <header className="flex flex-col gap-5 md:gap-8">
@@ -72,15 +71,49 @@ const AuthForm = ({ type }: { type: string }) => {
                         <>
                             <Form {...form}>
                                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-
+                                    {
+                                        type === "sign-up" && (<>
+                                            <CustomInput
+                                                control={form.control} label={'First Name'} name="firstName" placeholder={'Enter Your First Name'} />
+                                            <CustomInput
+                                                control={form.control} label={'Last Name'} name="latsName" placeholder={'Enter Your last Name'} />
+                                            <CustomInput
+                                                control={form.control} label={'Address'} name="address" placeholder={'Enter Your Address'} />
+                                            <CustomInput
+                                                control={form.control} label={'State'} name="state" placeholder={'EX : Kerala'} />
+                                            <CustomInput
+                                                control={form.control} label={'Postal Code'} name="postalCode" placeholder={'Ex : 680680'} />
+                                            <CustomInput
+                                                control={form.control} label={'DOB'} name="dob" placeholder={'YYYY-MM-DD'} />
+                                            <CustomInput
+                                                control={form.control} label={'SSN'} name="SNN" placeholder={'EX : 0000'} />
+                                        </>)
+                                    }
                                     <CustomInput
-                                        control={form.control} label={'Email'} name="email" placeholder={'Enter Your Email'}  />
+                                        control={form.control} label={'Email'} name="email" placeholder={'Enter Your Email'} />
                                     <CustomInput
-                                        control={form.control} label={'Password'} name='password' placeholder={'Enter Your Password'}  />
+                                        control={form.control} label={'Password'} name='password' placeholder={'Enter Your Password'} />
+                                    <div className="flex flex-col gap-4">
+                                        <Button type="submit" className='form-btn' disabled={isLoading}>
+                                            {isLoading ? (<>
+                                                <Loader2 speed={1000} size={20} className='animate-spin' /> &nbsp; Loading...
+                                            </>) : type === 'sign-in' ? 'Sign In' : "Sign Up"}
 
-                                    <Button type="submit">Submit</Button>
+                                        </Button>
+                                    </div>
+
                                 </form>
                             </Form>
+                            <footer className='flex justify-center gap-1'>
+                                <p className='text-14 font-normal text-gray-600'>
+                                    {
+                                        type === 'sign-in' ? "Dont Have An Account?" : "Already Have An Account?"
+                                    }
+                                </p>
+                                <Link className='form-link' href={type === "sign-in" ? 'sign-up' : 'sign-in'}>
+                                    {type === "sign-in" ? 'sign-up' : 'sign-in'}
+                                </Link>
+                            </footer>
                         </>
                     )
 

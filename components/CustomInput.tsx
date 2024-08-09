@@ -17,9 +17,12 @@ import { Control } from 'react-hook-form'
 import { Input } from "@/components/ui/input"
 import { AuthFormSchema } from '@/lib/utils'
 
+
+const formSchema = AuthFormSchema('sign-up')
+
 interface CustomInput {
-    control: Control<z.infer<typeof AuthFormSchema>>,
-    name: FieldPath<z.infer<typeof AuthFormSchema>>,
+    control: Control<z.infer<typeof formSchema>>,
+    name: FieldPath<z.infer<typeof formSchema>>,
     label: string,
     placeholder: string,
 
@@ -47,15 +50,6 @@ const CustomInput = ({ control, name, label, placeholder }: CustomInput) => {
                         <FormMessage className='form-message'></FormMessage>
                     </div>
                 </div>
-                // <FormItem>
-                //     <FormControl>
-                //         <Input placeholder="shadcn" {...field} />
-                //     </FormControl>
-                //     <FormDescription>
-                //         This is your public display name.
-                //     </FormDescription>
-                //     <FormMessage />
-                // </FormItem>
             )}
         />
     )
