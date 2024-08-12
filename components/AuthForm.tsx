@@ -14,6 +14,7 @@ import CustomInput from './CustomInput'
 import { AuthFormSchema } from '@/lib/utils'
 import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { signIn, signUp } from '@/lib/actions/user.actions'
 
 const AuthForm = ({ type }: { type: string }) => {
     const router = useRouter()
@@ -42,18 +43,22 @@ const AuthForm = ({ type }: { type: string }) => {
                 //data recieved from form
 
 
-                // let res=await Sigin({
-                //     email: values.email,
-                //     password: values.password,
-                // })
+                let res = await signIn({
+                    email: values.email,
+                    password: values.password,
+                })
+                console.log({ res });
 
-                // if (res) router.push('/')
+                if (res) router.push('/')
             }
 
             // sign up Fn
             if (type === 'sign-up') {
 
-                // const res = await Signup(values)
+                const res = await signUp(values);
+                console.log({ res });
+
+                setUser(res);
             }
 
         } catch (error) {
@@ -108,7 +113,7 @@ const AuthForm = ({ type }: { type: string }) => {
                                                 <CustomInput
                                                     control={form.control} label={'First Name'} name="firstName" placeholder={'Enter Your First Name'} />
                                                 <CustomInput
-                                                    control={form.control} label={'Last Name'} name="latsName" placeholder={'Enter Your last Name'} />
+                                                    control={form.control} label={'Last Name'} name="lastName" placeholder={'Enter Your last Name'} />
                                             </div>
                                             <CustomInput
                                                 control={form.control} label={'Address'} name="address" placeholder={'Enter Your Address'} />
