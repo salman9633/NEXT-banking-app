@@ -4,6 +4,8 @@ import React from 'react'
 import Bankcard from './Bankcard'
 
 const RightsideBar = ({ user, transactions, banks }: RightSidebarProps) => {
+    console.log({user});
+    
     return (
         <aside className='right-sidebar'>
             <section className="flex flex-col pb-8">

@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import Footer from "./Footer"
 
 
 const MobileNav = ({ user }: MobileNavProps) => {
@@ -58,20 +59,20 @@ const MobileNav = ({ user }: MobileNavProps) => {
                                                     }
                                                 )}
                                             >
-                                               
-                                                    <Image
-                                                        src={item.imgURL}
-                                                        width={24}
-                                                        height={24}
-                                                        alt={item.label}
-                                                     
-                                                        className={
-                                                            cn({
-                                                                'brightness-[3] invert-0': isActive
-                                                            })
-                                                        }
-                                                    />
-                                              
+
+                                                <Image
+                                                    src={item.imgURL}
+                                                    width={24}
+                                                    height={24}
+                                                    alt={item.label}
+
+                                                    className={
+                                                        cn({
+                                                            'brightness-[3] invert-0': isActive
+                                                        })
+                                                    }
+                                                />
+
                                                 <p className={cn('text-16 font-semibold text-black-2', {
                                                     'text-white': isActive
                                                 })}>{item.label}</p>
@@ -84,10 +85,10 @@ const MobileNav = ({ user }: MobileNavProps) => {
 
                             </nav>
                         </SheetClose>
+                        <Footer user={user} type="mobile" />
                     </div>
                 </SheetContent>
             </Sheet>
-
         </section>
     )
 }

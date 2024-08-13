@@ -5,7 +5,20 @@ import { getLoggedInUser } from '@/lib/actions/user.actions'
 import React from 'react'
 
 const RootsTest = async () => {
-  const loggedIn = await getLoggedInUser()
+  let loggedIn
+  try {
+    loggedIn = await getLoggedInUser()
+    console.log({ loggedIn },'loggedIn............');
+  } catch (error) {
+    console.error(error,'............');
+  }
+
+if(!loggedIn) {
+  loggedIn = {
+    name:'Guest'
+  }
+}
+
 
   return (
     <section className='home'>
