@@ -15,6 +15,7 @@ import { AuthFormSchema } from '@/lib/utils'
 import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { signIn, signUp } from '@/lib/actions/user.actions'
+import PlaidLink from './PlaidLink'
 
 const AuthForm = ({ type }: { type: string }) => {
     const router = useRouter()
@@ -54,8 +55,21 @@ const AuthForm = ({ type }: { type: string }) => {
 
             // sign up Fn
             if (type === 'sign-up') {
+                const userData = {
+                    firstName: values.firstName!,
+                    lastName: values.lastName!,
+                    address1: values.address!,
+                    city: values.city!,
+                    state: values.state!,
+                    postalCode: values.postalCode!,
+                    dateOfBirth: values.dob!,
+                    ssn: values.SNN!,
+                    email: values.email!,
+                    password: values.password!,
 
-                const res = await signUp(values);
+                }
+
+                const res = await signUp(userData);
                 console.log({ res });
 
                 setUser(res);
@@ -100,66 +114,69 @@ const AuthForm = ({ type }: { type: string }) => {
             </header>
             {
                 user ?
-                    (<div className="flex flex-col gap-4">
-                        {/* link account */}
-                    </div>) : (
-                        <>
-                            <Form {...form}>
-                                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                                    {
-                                        type === "sign-up" && (<>
-                                            <div className="flex gap-4">
+                (<div className="flex flex-col gap-4">
+                    <PlaidLink
+                        user={user} variant="primary"
+                    />
+                </div>)
+                :(
+                    <>
+                        <Form {...form}>
+                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                                {
+                                    type === "sign-up" && (<>
+                                        <div className="flex gap-4">
 
-                                                <CustomInput
-                                                    control={form.control} label={'First Name'} name="firstName" placeholder={'Enter Your First Name'} />
-                                                <CustomInput
-                                                    control={form.control} label={'Last Name'} name="lastName" placeholder={'Enter Your last Name'} />
-                                            </div>
                                             <CustomInput
-                                                control={form.control} label={'Address'} name="address" placeholder={'Enter Your Address'} />
+                                                control={form.control} label={'First Name'} name="firstName" placeholder={'Enter Your First Name'} />
                                             <CustomInput
-                                                control={form.control} label={'City'} name="city" placeholder={'Enter Your city'} />
-                                            <div className="flex gap-4">
-                                                <CustomInput
-                                                    control={form.control} label={'State'} name="state" placeholder={'EX : Kerala'} />
-                                                <CustomInput
-                                                    control={form.control} label={'Postal Code'} name="postalCode" placeholder={'Ex : 680680'} />
-                                            </div>
-                                            <div className="flex gap-4">
-                                                <CustomInput
-                                                    control={form.control} label={'DOB'} name="dob" placeholder={'YYYY-MM-DD'} />
-                                                <CustomInput
-                                                    control={form.control} label={'SSN'} name="SNN" placeholder={'EX : 0000'} />
-                                            </div>
-                                        </>)
-                                    }
-                                    <CustomInput
-                                        control={form.control} label={'Email'} name="email" placeholder={'Enter Your Email'} />
-                                    <CustomInput
-                                        control={form.control} label={'Password'} name='password' placeholder={'Enter Your Password'} />
-                                    <div className="flex flex-col gap-4">
-                                        <Button type="submit" className='form-btn' disabled={isLoading}>
-                                            {isLoading ? (<>
-                                                <Loader2 speed={1000} size={20} className='animate-spin' /> &nbsp; Loading...
-                                            </>) : type === 'sign-in' ? 'Sign In' : "Sign Up"}
+                                                control={form.control} label={'Last Name'} name="lastName" placeholder={'Enter Your last Name'} />
+                                        </div>
+                                        <CustomInput
+                                            control={form.control} label={'Address'} name="address" placeholder={'Enter Your Address'} />
+                                        <CustomInput
+                                            control={form.control} label={'City'} name="city" placeholder={'Enter Your city'} />
+                                        <div className="flex gap-4">
+                                            <CustomInput
+                                                control={form.control} label={'State'} name="state" placeholder={'EX : Kerala'} />
+                                            <CustomInput
+                                                control={form.control} label={'Postal Code'} name="postalCode" placeholder={'Ex : 680680'} />
+                                        </div>
+                                        <div className="flex gap-4">
+                                            <CustomInput
+                                                control={form.control} label={'DOB'} name="dob" placeholder={'YYYY-MM-DD'} />
+                                            <CustomInput
+                                                control={form.control} label={'SSN'} name="SNN" placeholder={'EX : 0000'} />
+                                        </div>
+                                    </>)
+                                }
+                                <CustomInput
+                                    control={form.control} label={'Email'} name="email" placeholder={'Enter Your Email'} />
+                                <CustomInput
+                                    control={form.control} label={'Password'} name='password' placeholder={'Enter Your Password'} />
+                                <div className="flex flex-col gap-4">
+                                    <Button type="submit" className='form-btn' disabled={isLoading}>
+                                        {isLoading ? (<>
+                                            <Loader2 speed={1000} size={20} className='animate-spin' /> &nbsp; Loading...
+                                        </>) : type === 'sign-in' ? 'Sign In' : "Sign Up"}
 
-                                        </Button>
-                                    </div>
+                                    </Button>
+                                </div>
 
-                                </form>
-                            </Form>
-                            <footer className='flex justify-center gap-1'>
-                                <p className='text-14 font-normal text-gray-600'>
-                                    {
-                                        type === 'sign-in' ? "Dont Have An Account?" : "Already Have An Account?"
-                                    }
-                                </p>
-                                <Link className='form-link' href={type === "sign-in" ? 'sign-up' : 'sign-in'}>
-                                    {type === "sign-in" ? 'sign-up' : 'sign-in'}
-                                </Link>
-                            </footer>
-                        </>
-                    )
+                            </form>
+                        </Form>
+                        <footer className='flex justify-center gap-1'>
+                            <p className='text-14 font-normal text-gray-600'>
+                                {
+                                    type === 'sign-in' ? "Dont Have An Account?" : "Already Have An Account?"
+                                }
+                            </p>
+                            <Link className='form-link' href={type === "sign-in" ? 'sign-up' : 'sign-in'}>
+                                {type === "sign-in" ? 'sign-up' : 'sign-in'}
+                            </Link>
+                        </footer>
+                    </>
+                )
 
             }
 
