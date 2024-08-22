@@ -1,6 +1,6 @@
 'use server'
 
-import { ID } from "node-appwrite";
+import { ID, Query } from "node-appwrite";
 import { createAdminClient, createSessionClient } from "../appwrite";
 import { cookies } from "next/headers";
 import { encryptId, extractCustomerIdFromUrl, parseStringify } from "../utils";
@@ -17,10 +17,35 @@ const {
     APPWRITE_TRANSACTION_COLLECTION_ID: TRANSACTION_COLLECTION_ID,
 } = process.env
 
+export const getUserInfo=async({userId}:getUserInfoProps)=>{
+    try {
+        const { database } = await createAdminClient();
+
+        const user = await database.listDocuments(
+            DATABASE_ID!,
+            USER_COLLECTION_ID!,
+            [Query.equal('userId', [userId])] //fetching from db in appwrite
+        )
+
+        return parseStringify(user.documents[0])
+    } catch (error: any) {
+        throw new Error(`get banks Error ${error.message}`)
+
+    }
+}
+
 export const signIn = async ({ email, password }: signInProps) => {
     try {
         const { account } = await createAdminClient();
-        const user = await account.createEmailPasswordSession(email, password);
+        const session = await account.createEmailPasswordSession(email, password);
+
+        cookies().set("appwrite-session", session.secret, {
+            path: "/",
+            httpOnly: true,
+            sameSite: "strict",
+            secure: true,
+        });
+        const user = await getUserInfo({ userId: session.userId });
         console.log({ user }, 'signed in user...');
 
         return parseStringify(user);
@@ -29,7 +54,7 @@ export const signIn = async ({ email, password }: signInProps) => {
     }
 }
 
-export const signUp = async ({ password,dateOfBirth, ...userData }: SignUpParams) => {
+export const signUp = async ({ password, dateOfBirth, ...userData }: SignUpParams) => {
     const { email, firstName, lastName } = userData
     let newUserAc
     try {
@@ -40,7 +65,7 @@ export const signUp = async ({ password,dateOfBirth, ...userData }: SignUpParams
 
 
         const dwollaCustomerUrl = await createDwollaCustomer({
-            dateOfBirth,...userData, type: 'personal'
+            dateOfBirth, ...userData, type: 'personal'
         });
         if (!dwollaCustomerUrl) throw new Error('Error creating dwolla Account');
 
@@ -79,8 +104,8 @@ export const signUp = async ({ password,dateOfBirth, ...userData }: SignUpParams
 export async function getLoggedInUser() {
     try {
         const { account } = await createSessionClient();
-        const user = await account.get();
-        console.log({ user }, 'user...');
+        const res = await account.get();
+        const user= await getUserInfo({userId:res.$id});
 
         return parseStringify(user);
     } catch (error) {
@@ -204,6 +229,38 @@ export const exchangePublicToken = async (
 
     } catch (error) {
         console.log({ error }, 'exchange public token error');
+
+    }
+}
+
+export const getBank = async ({ documentId }: getBankProps) => {
+    try {
+        const { database } = await createAdminClient();
+
+        const bank = await database.listDocuments(
+            DATABASE_ID!,
+            BANK_COLLECTION_ID!,
+            [Query.equal('$id', [documentId])] //fetching from db in appwrite
+        )
+        return parseStringify(bank.documents[0])
+    } catch (error: any) {
+        throw new Error(`get banks Error ${error.message}`)
+
+    }
+}
+export const getBanks = async ({ userId }: getBanksProps) => {
+    try {
+        const { database } = await createAdminClient();
+
+        const banks = await database.listDocuments(
+            DATABASE_ID!,
+            BANK_COLLECTION_ID!,
+            [Query.equal('userId', [userId])] //fetching from db in appwrite
+        )
+
+        return parseStringify(banks.documents)
+    } catch (error: any) {
+        throw new Error(`get banks Error ${error.message}`)
 
     }
 }

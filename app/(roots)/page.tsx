@@ -1,23 +1,33 @@
 import HeaderBox from '@/components/HeaderBox'
 import RightsideBar from '@/components/RightsideBar'
 import TotalBalanceBox from '@/components/TotalBalanceBox'
+import { getAccount, getAccounts } from '@/lib/actions/bank.actions'
 import { getLoggedInUser } from '@/lib/actions/user.actions'
 import React from 'react'
 
-const RootsTest = async () => {
+const RootsTest = async ({ searchParams: { id, page } }: SearchParamProps) => {
   let loggedIn
   try {
     loggedIn = await getLoggedInUser()
-    console.log({ loggedIn },'loggedIn............');
+    console.log({ loggedIn }, 'loggedIn............');
   } catch (error) {
-    console.error(error,'............');
+    console.error(error, '............');
   }
 
-if(!loggedIn) {
-  loggedIn = {
-    name:'Guest'
+  if (!loggedIn) {
+    loggedIn = {
+      firstName: 'Guest'
+    }
   }
-}
+
+  const accounts = await getAccounts({ userId: loggedIn.$id })
+
+  if (!accounts) return
+  const accountsData = accounts?.data
+  const appwriteItemId = (id as string) || accountsData?.[0]?.appwriteItemId
+  const account = await getAccount({ appwriteItemId })
+
+  console.log({account,accountsData})
 
 
   return (
@@ -27,22 +37,20 @@ if(!loggedIn) {
           <HeaderBox
             type="greeting"
             title="Welcome"
-            user={loggedIn?.name || "Guest"}
+            user={loggedIn?.firstName || "Guest"}
             subtext='This is where you can manage your accounts'
           />
           <TotalBalanceBox
-            accounts={[]}
-            totalBanks={5}
-            totalCurrentBalance={2999.99}
+            accounts={accountsData}
+            totalBanks={accounts?.totalBanks}
+            totalCurrentBalance={accounts?.totalCurrentBalance}
           />
         </header>
       </div>
       <RightsideBar
         user={loggedIn}
-        transactions={[]}
-        banks={[{
-          currentBalance: 123
-        }, { currentBalance: 299 }]}
+        transactions={accounts?.transactions}
+        banks={accountsData?.slice(0, 2)}
       />
 
     </section>
