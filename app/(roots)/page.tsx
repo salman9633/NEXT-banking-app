@@ -11,7 +11,7 @@ const RootsTest = async ({ searchParams: { id, page } }: SearchParamProps) => {
   let loggedIn
   try {
     loggedIn = await getLoggedInUser()
-    console.log({ loggedIn }, 'loggedIn............');
+    // console.log({ loggedIn }, 'loggedIn............');
   } catch (error) {
     console.error(error, '............');
   }
@@ -29,7 +29,7 @@ const RootsTest = async ({ searchParams: { id, page } }: SearchParamProps) => {
   const appwriteItemId = (id as string) || accountsData?.[0]?.appwriteItemId
   const account = await getAccount({ appwriteItemId })
 
-  console.log({ account, accountsData })
+  // console.log({ account, accountsData })
 
 
   return (
