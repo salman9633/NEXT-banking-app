@@ -12,7 +12,6 @@ const RecentTransactions = ({
     appwriteItemId,
     page = 1
 }: RecentTransactionsProps) => {
-    console.log({accounts});
     
     return (
         <section className='recent-transactions'>
@@ -26,7 +25,6 @@ const RecentTransactions = ({
                 <TabsList className='recent-transactions-tablist'>
                     {
                         accounts.map((account: Account) =>{
-                            console.log({account});
                             
                           return ( 
                             <TabsTrigger key={account.id} value={account.appwriteItemId!}>
