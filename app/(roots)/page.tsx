@@ -57,7 +57,7 @@ const RootsTest = async ({ searchParams: { id, page } }: SearchParamProps) => {
       </div>
       <RightsideBar
         user={loggedIn}
-        transactions={accounts?.transactions}
+        transactions={account?.transactions}
         banks={accountsData?.slice(0, 2)}
       />
 

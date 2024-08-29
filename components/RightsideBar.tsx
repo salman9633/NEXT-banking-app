@@ -2,10 +2,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import Bankcard from './Bankcard'
+import { countTransactionCategories } from '@/lib/utils'
+import Category from './Category'
 
 const RightsideBar = ({ user, transactions, banks }: RightSidebarProps) => {
-    console.log({user});
-    
+    const categories: CategoryCount[] = countTransactionCategories(transactions);
     return (
         <aside className='right-sidebar'>
             <section className="flex flex-col pb-8">
@@ -55,8 +56,8 @@ const RightsideBar = ({ user, transactions, banks }: RightSidebarProps) => {
                                 banks[1] && (
                                     <div className="absolute right-0 top-8 z-0 w-[90%] hover:scale-105 hover:relative! hover:z-10 duration-100">
                                         <Bankcard
-                                            key={banks[0]?.$id}
-                                            account={banks[0]}
+                                            key={banks[1]?.$id}
+                                            account={banks[1]}
                                             userName={`${user.firstName} ${user.lastName}`}
                                             showBalance={false} />
                                     </div>
@@ -65,6 +66,21 @@ const RightsideBar = ({ user, transactions, banks }: RightSidebarProps) => {
                         </div>
                     )
                 }
+
+                <div className="mt-10 flex flex-1 flex-col gap-6">
+                    <h2 className="header-2">
+                        Top Categories
+                    </h2>
+                    <div className="space-y-4">
+                        {
+                            categories.map((category, index) => {
+                                return (
+                                    <Category key={index} category={category} />
+                                )
+                            })
+                        }
+                    </div>
+                </div>
             </section>
         </aside>
     )

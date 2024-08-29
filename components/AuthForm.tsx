@@ -48,7 +48,6 @@ const AuthForm = ({ type }: { type: string }) => {
                     email: values.email,
                     password: values.password,
                 })
-                console.log({ res });
 
                 if (res) router.push('/')
             }
@@ -70,7 +69,6 @@ const AuthForm = ({ type }: { type: string }) => {
                 }
 
                 const res = await signUp(userData);
-                console.log({ res });
 
                 setUser(res);
             }
