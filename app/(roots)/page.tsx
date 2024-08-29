@@ -11,7 +11,6 @@ const RootsTest = async ({ searchParams: { id, page } }: SearchParamProps) => {
   let loggedIn
   try {
     loggedIn = await getLoggedInUser()
-    // console.log({ loggedIn }, 'loggedIn............');
   } catch (error) {
     console.error(error, '............');
   }

@@ -79,8 +79,7 @@ export function formatAmount(amount: number): string {
 export const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));
 
 export const removeSpecialCharacters = (value: string) => {
-  console.log({value});
-  if(value) return value.replace(/[^\w\s]/gi, "");
+  if (value) return value.replace(/[^\w\s]/gi, "");
 };
 
 interface UrlQueryParams {
@@ -200,12 +199,12 @@ export const getTransactionStatus = (date: Date) => {
 export const AuthFormSchema = (type: string) => z.object({
   firstName: type === 'sign-in' ? z.string().optional() : z.string().min(2),
   lastName: type === 'sign-in' ? z.string().optional() : z.string().min(2),
-  address: type === 'sign-in' ? z.string().optional() : z.string().min(2),
+  address: type === 'sign-in' ? z.string().optional() : z.string().min(5),
   city: type === 'sign-in' ? z.string().optional() : z.string().min(2),
   state: type === 'sign-in' ? z.string().optional() : z.string().min(2),
-  postalCode: type === 'sign-in' ? z.string().optional() : z.string().min(2),
-  dob: type === 'sign-in' ? z.string().optional() : z.string().min(2),
-  SNN: type === 'sign-in' ? z.string().optional() : z.string().min(2),
+  postalCode: type === 'sign-in' ? z.string().optional() : z.string().min(5).max(5),
+  dob: type === 'sign-in' ? z.string().optional() : z.string().min(10).max(10),
+  SNN: type === 'sign-in' ? z.string().optional() : z.string().min(4).max(4),
   email: z.string().email(),
   password: z.string().min(8)
 })

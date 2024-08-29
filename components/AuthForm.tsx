@@ -27,8 +27,8 @@ const AuthForm = ({ type }: { type: string }) => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            email: "",
-            password: ""
+            email: "salmantest@gmail.com",
+            password: "salmanfaris"
         },
     })
 
@@ -80,7 +80,6 @@ const AuthForm = ({ type }: { type: string }) => {
             setIsLoading(false)
         }
 
-        console.log(values);
         setIsLoading(false);
     }
 
@@ -136,9 +135,9 @@ const AuthForm = ({ type }: { type: string }) => {
                                             control={form.control} label={'City'} name="city" placeholder={'Enter Your city'} />
                                         <div className="flex gap-4">
                                             <CustomInput
-                                                control={form.control} label={'State'} name="state" placeholder={'EX : Kerala'} />
+                                                control={form.control} label={'State'} name="state" placeholder={'EX : NY'} />
                                             <CustomInput
-                                                control={form.control} label={'Postal Code'} name="postalCode" placeholder={'Ex : 680680'} />
+                                                control={form.control} label={'Postal Code'} name="postalCode" placeholder={'Ex : 60060'} />
                                         </div>
                                         <div className="flex gap-4">
                                             <CustomInput

@@ -82,7 +82,6 @@ export const getAccount = async ({ appwriteItemId }: getAccountProps) => {
 
         const transferTransactions = transferTransactionsData.documents.map(
             (transferData: Transaction) => {
-                console.log({transferData});
                 
                 return ({
                 id: transferData.$id,

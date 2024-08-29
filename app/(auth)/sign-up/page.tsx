@@ -3,9 +3,7 @@ import { getLoggedInUser } from '@/lib/actions/user.actions';
 import React from 'react'
 
 const Signup = async () => {
-  const loggedInUser = await getLoggedInUser();
-  console.log({loggedInUser});
-  
+  const loggedInUser = await getLoggedInUser();  
   return (
     <section className='flex-center size-full max-sm:px-6'>
       <AuthForm
